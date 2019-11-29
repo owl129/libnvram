@@ -19,6 +19,16 @@ int nvram_set_state(const char *key, const int val) __attribute__ ((alias ("nvra
 int nvram_restore_default(void) __attribute__ ((alias ("nvram_reset")));
 int nvram_upgrade(void* ptr) __attribute__ ((alias ("nvram_commit")));
 
+/* Tenda NVRAM (from libcommon.so) */
+
+int bcm_nvram_init(void) __attribute__ ((alias ("nvram_init")));
+char *bcm_nvram_get(const char *key) __attribute__ ((alias ("nvram_get")));
+int bcm_nvram_getall(char *buf, size_t len) __attribute__ ((alias ("nvram_getall")));
+int bcm_nvram_set(const char *key, const char *val) __attribute__ ((alias ("nvram_set")));
+int bcm_nvram_unset(const char *key) __attribute__ ((alias ("nvram_unset")));
+int bcm_nvram_restore(void) __attribute__ ((alias ("nvram_reset")));
+int bcm_nvram_commit(void) __attribute__ ((alias ("nvram_commit")));
+
 /* Atheros/Broadcom NVRAM */
 
 int nvram_get_nvramspace(void) {
