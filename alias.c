@@ -222,6 +222,18 @@ int envram_commit(void) {
     return !nvram_commit();
 }
 
+int envram_submit(void) {
+    return !nvram_commit();
+}
+
+int envram_show(void){
+    return !E_SUCCESS;
+}
+
+int envram_to_nvram(void){
+    return !E_SUCCESS;
+}
+
 int envram_default(void) {
     return !nvram_set_default();
 }
