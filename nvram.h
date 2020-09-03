@@ -38,7 +38,16 @@ char *nvram_get(const char *key);
 char *nvram_safe_get(const char *key);
 // Given a key, gets the corresponding NVRAM value. If key is non-existent, returns val.
 // Otherwise, returns NULL. Will dynamically allocate memory.
-char *nvram_default_get(const char *key, const char *val);
+/* 
+origin: char *nvram_default_get(const char *key, const char *val);
+but sometimes takes only one params.  eg. broadcom sdk. 
+C cannot check whether pointer is valid(non-NULL invalid pointer), either function overload.
+So we have to ignore the second params to prevent invalid pointer dereference.
+refs:
+https://github.com/RMerl/asuswrt-merlin/blob/master/release/src-rt/include/bcmnvram.h
+https://github.com/RMerl/asuswrt-merlin/blob/master/release/src/router/shared/defaults.c
+*/
+char *nvram_default_get(const char *key);
 // Given a key, gets the corresponding NVRAM value into a user-supplied buffer.
 // Will hold lock.
 int nvram_get_buf(const char *key, char *buf, size_t sz);

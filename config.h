@@ -70,6 +70,8 @@
     /* Used by "DGND3700 Firmware Version 1.0.0.17(NA).zip" (3425) to prevent crashes */ \
     ENTRY("time_zone_x", nvram_set, "0") \
     ENTRY("rip_multicast", nvram_set, "0") \
-    ENTRY("bs_trustedip_enable", nvram_set, "0")
+    ENTRY("bs_trustedip_enable", nvram_set, "0")\
+    /* Merlin-serial router check http_passwd != http_passwd.default to finish web init */ \
+    ENTRY("http_passwd.default", nvram_set, "admin")\
 
 #endif

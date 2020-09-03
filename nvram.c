@@ -68,6 +68,7 @@ static int sem_get() {
     // Get the semaphore using the key
     if ((semid = semget(key, 1, IPC_CREAT | IPC_EXCL | 0666)) >= 0) {
         semun.val = 1;
+unlock:
         // Unlock the semaphore and set the sem_otime field
         if (semop(semid, &sembuf, 1) == -1) {
             PRINT_MSG("%s\n", "Unable to initialize semaphore!");
@@ -95,6 +96,7 @@ static int sem_get() {
                 PRINT_MSG("Waiting for semaphore initialization (Key: %x, Semaphore: %x)...\n", key, semid);
             }
         }
+        goto unlock;
     }
 
     return (timeout < IPC_TIMEOUT) ? semid : -1;
@@ -349,18 +351,21 @@ char *nvram_safe_get(const char *key) {
     return ret ? ret : strdup("");
 }
 
-char *nvram_default_get(const char *key, const char *val) {
-    char *ret = nvram_get(key);
+char *nvram_default_get(const char *key) {
+    char defaultkey[PATH_MAX];
+    snprintf(defaultkey, PATH_MAX, "%s.default", key);
+    
+    PRINT_MSG("nvram_default_get key = %s\n", key);
 
-    PRINT_MSG("%s = %s || %s\n", key, ret, val);
-
-    if (ret) {
+    char *ret;
+    
+    if ( (ret = nvram_get(defaultkey)) != NULL || (ret = nvram_get(key)) != NULL ){
         return ret;
     }
 
-    if (val && nvram_set(key, val)) {
-        return nvram_get(key);
-    }
+    // if (val && nvram_set(key, val)) {
+    //     return nvram_get(key);
+    // }
 
     return NULL;
 }
